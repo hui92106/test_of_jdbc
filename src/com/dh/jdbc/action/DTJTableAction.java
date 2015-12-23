@@ -20,9 +20,9 @@ public class DTJTableAction {
         d1.setSex(1);
         d1.setIsdel(1);
 //        d.addDTJTable(d1);
-//        d.delDTJTable(4);
+        d.delDTJTable(4);
 //        d.updateDTJTable(d1);
-        DTJTable d4 = d.queryDTJTable(4);
-        System.out.println(d4.toString());
+//        DTJTable d4 = d.queryDTJTable(4);
+//        System.out.println(d4.toString());
     }
 }
