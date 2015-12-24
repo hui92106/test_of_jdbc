@@ -1,28 +1,35 @@
 package com.dh.jdbc.action;
 
-import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import com.dh.jdbc.dao.DTJTableDao;
 import com.dh.jdbc.model.DTJTable;
 
 public class DTJTableAction {
-    public static void main(String[] args) throws Exception {
-        DTJTableDao d = new DTJTableDao();
-        DTJTable d1= new DTJTable();
-        d1.setId(2);
-        d1.setUser_name("12312312124312êÍ");
-        d1.setAge(24);
-        d1.setBirthday(new Date());
-        d1.setEmail("asdf");
-        d1.setMobile("");
-        d1.setUpdate_user("");
-        d1.setCreate_user("");
-        d1.setSex(1);
-        d1.setIsdel(1);
-//        d.addDTJTable(d1);
-        d.delDTJTable(4);
-//        d.updateDTJTable(d1);
-//        DTJTable d4 = d.queryDTJTable(4);
-//        System.out.println(d4.toString());
+    
+    public void add(DTJTable dtj) throws Exception{
+        DTJTableDao dtjDao = new DTJTableDao();
+        dtjDao.addDTJTable(dtj);
+    }
+    public DTJTable  get(Integer id) throws Exception {
+        DTJTableDao dtjDao = new DTJTableDao();
+        return dtjDao.get(id);
+    }
+    public void edit(DTJTable dtj) throws Exception{
+        DTJTableDao dtjDao = new DTJTableDao();
+        dtjDao.updateDTJTable(dtj);
+    }
+    public void del(Integer id) throws Exception {
+        DTJTableDao dtjDao = new DTJTableDao();
+        dtjDao.delDTJTable(id);
+    }
+    public List<DTJTable> query() throws Exception{
+        DTJTableDao dtjDao = new DTJTableDao();
+        return dtjDao.query();
+    }
+    public List<DTJTable> queryDTJTable(List<Map<String,Object>>parmas) throws Exception {
+        DTJTableDao dtjDao = new DTJTableDao();
+        return dtjDao.query(parmas);
     }
 }

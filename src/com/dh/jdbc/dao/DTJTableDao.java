@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.dh.jdbc.db.DBUtil;
 import com.dh.jdbc.model.DTJTable;
@@ -63,25 +64,38 @@ public class DTJTableDao {
     public List<DTJTable> query() throws Exception{
         Connection conn = DBUtil.getConnection();
         Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT USER_NAME,AGE FROM DH_TEST_JDBC");
+        ResultSet rs = stmt.executeQuery("SELECT ID,USER_NAME,AGE FROM DH_TEST_JDBC");
         List<DTJTable> dt = new ArrayList<DTJTable>(); 
         DTJTable d =null;
         while(rs.next()){
             d = new DTJTable();
+            d.setId(rs.getInt("id"));
             d.setUser_name(rs.getString("USER_NAME"));
             d.setAge(rs.getInt("AGE"));
             dt.add(d);
         }
+
         return dt;
     }
-    public DTJTable queryDTJTable(Integer id) throws SQLException{
+    public List<DTJTable> query(List<Map<String, Object>> parmas) throws SQLException{
         
         Connection conn = DBUtil.getConnection();
-        String sql = "select * from DH_TEST_JDBC " +
-        		"where id = ?";
-        PreparedStatement ptmt = conn.prepareStatement(sql);
-        ptmt.setInt(1, id);
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append("select * from DH_TEST_JDBC where 1=1");
+        if(parmas != null && parmas.size()>0){
+            for (int i = 0; i < parmas.size(); i++) {
+                Map<String, Object> map = parmas.get(i);
+                sb.append(" and "+map.get("name")+" "+map.get("rela")+" " +map.get("value"));
+                System.out.println(map.toString());
+                System.out.println(sb.toString());
+            }
+        }
+        
+        PreparedStatement ptmt = conn.prepareStatement(sb.toString());
         ResultSet rs = ptmt.executeQuery();
+        List<DTJTable> dt = new ArrayList<DTJTable>(); 
+
         DTJTable d = new DTJTable();
         while (rs.next()) {
             d.setId(rs.getInt("id"));
@@ -97,7 +111,27 @@ public class DTJTableDao {
             d.setUpdate_date(rs.getDate("update_date"));
             d.setIsdel(rs.getInt("isdel"));
             
+            dt.add(d);
         }
-        return d;
+        System.out.println(dt.toString());
+        return dt;
     }
+    
+    public DTJTable get(Integer id) throws Exception {
+        Connection conn = DBUtil.getConnection();
+        String sql = "SELECT * FROM DH_TEST_JDBC t where t.id = ?";
+        PreparedStatement ptmt = conn.prepareStatement(sql);
+        ptmt.setInt(1, id);
+        ResultSet rs = ptmt.executeQuery();
+        DTJTable d = null;
+        while(rs.next()){
+            d = new DTJTable();
+            d.setUser_name(rs.getString("USER_NAME"));
+            d.setAge(rs.getInt("AGE"));
+        }
+        
+        return d;
+        
+    }
+    
 }
